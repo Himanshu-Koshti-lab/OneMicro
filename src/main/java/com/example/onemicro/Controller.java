@@ -1,5 +1,6 @@
 package com.example.onemicro;
 
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,13 +20,18 @@ public class Controller {
     }
 
     @GetMapping("/micro1/get")
+    @CircuitBreaker(name = "micro2breaker", fallbackMethod = "fallBackMicro2")
     public ResponseEntity<String> getMicro1(){
 
         String string = "";
 //        string = restTemplate.getForObject("http://TWOMICRO/micro2/get", String.class);
-        string = micro2ReignClientInterface.getMicro1().getBody();
+        string = micro2ReignClientInterface.getMicro2().getBody();
         System.out.println("Called..");
         return new ResponseEntity<>("microservice 1 + " + string, HttpStatus.OK);
+    }
+
+    public ResponseEntity<String> fallBackMicro2( Exception ex){
+        return new ResponseEntity<>("microservice 2 Down +  ", HttpStatus.OK);
     }
 
 }
