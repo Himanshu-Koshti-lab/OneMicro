@@ -1,6 +1,7 @@
 package com.example.onemicro;
 
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,8 +21,10 @@ public class Controller {
     }
 
     @GetMapping("/micro1/get")
-    @CircuitBreaker(name = "micro2breaker", fallbackMethod = "fallBackMicro2")
+//    @CircuitBreaker(name = "micro2breaker", fallbackMethod = "fallBackMicro2")
+    @Retry(name = "micro2retry", fallbackMethod = "fallBackMicro2")
     public ResponseEntity<String> getMicro1(){
+        System.out.println("Called..");
 
         String string = "";
 //        string = restTemplate.getForObject("http://TWOMICRO/micro2/get", String.class);
