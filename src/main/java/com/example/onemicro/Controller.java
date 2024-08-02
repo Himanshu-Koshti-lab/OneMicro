@@ -23,8 +23,8 @@ public class Controller {
 
     @GetMapping("/micro1/get")
 //    @CircuitBreaker(name = "micro2breaker", fallbackMethod = "fallBackMicro2")
-//    @Retry(name = "micro2retry", fallbackMethod = "fallBackMicro2")
-    @RateLimiter(name = "micro2limiter", fallbackMethod = "fallBackMicro2")
+    @Retry(name = "micro2retry", fallbackMethod = "fallBackMicro2")
+//    @RateLimiter(name = "micro2limiter", fallbackMethod = "fallBackMicro2")
     public ResponseEntity<String> getMicro1(){
         System.out.println("Called..");
 
