@@ -42,3 +42,10 @@ resilience4j:
       micro2retry:
         max-attempts: 3
         wait-duration: 5s
+  ratelimiter:
+    instances:
+      micro2limiter:
+#        2 call in each 4 seconds
+        limit-refresh-period: 4s
+        limit-for-period: 2
+        timeout-duration: 2s

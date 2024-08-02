@@ -1,6 +1,7 @@
 package com.example.onemicro;
 
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import io.github.resilience4j.retry.annotation.Retry;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +23,8 @@ public class Controller {
 
     @GetMapping("/micro1/get")
 //    @CircuitBreaker(name = "micro2breaker", fallbackMethod = "fallBackMicro2")
-    @Retry(name = "micro2retry", fallbackMethod = "fallBackMicro2")
+//    @Retry(name = "micro2retry", fallbackMethod = "fallBackMicro2")
+    @RateLimiter(name = "micro2limiter", fallbackMethod = "fallBackMicro2")
     public ResponseEntity<String> getMicro1(){
         System.out.println("Called..");
 
@@ -34,7 +36,7 @@ public class Controller {
     }
 
     public ResponseEntity<String> fallBackMicro2( Exception ex){
-        return new ResponseEntity<>("microservice 2 Down +  ", HttpStatus.OK);
+        return new ResponseEntity<>("microservice 2 Down +  ", HttpStatus.BAD_REQUEST);
     }
 
 }
